@@ -1,8 +1,6 @@
 # RICONTROLLA LA LOGICA DELLA FUNZIONE "aggiungi_lettera()", DA FINIRE
 
 import random
-import json
-from flask import render_template
 
 lista_parole = [
 {"id": 1,
@@ -12,6 +10,8 @@ lista_parole = [
 "class" : "cities",
 "words" : ["misano","morciano"]}
 ]
+
+counter = []
 
 HANGMAN = (
 """
@@ -99,7 +99,7 @@ HANGMAN = (
 --------
 """)
 
-def scegli_categoria() -> int:
+def scegli_categoria(lista_parole):
     print("Inserire l'id di una delle seguenti categorie: ")
     for i in range(len(lista_parole)):
         print(lista_parole[i]["id"],"-",lista_parole[i]["class"])
@@ -107,55 +107,103 @@ def scegli_categoria() -> int:
     return scelta
 
 
-def scegli_parola(scelta: int) -> str | list:
+def scegli_parola(scelta: int):
     parola = random.choice(lista_parole[scelta-1]["words"])
     return parola
-def nascondi_paola(parola):
+
+def scomponi_parola(parola):
     parola_rivelata = []
     parola_nascosta = []
     for lettera in parola:
         parola_rivelata.append(lettera)
         parola_nascosta.append("_")
-    print(parola)
     return parola_rivelata, parola_nascosta
 
-def chiedi_lettera() -> str:
-    lettera = input("Inserire una lettera: ")
-    return lettera
 
-def controlla_lettera(lettera, parola) -> str | None:
-    if len(lettera) > 1:
-        print("ERRORE: inserire una singola lettera alla volta")
-        return None
-    elif lettera != str:
-        print("ERRORE: inserire una lettere dell'alfabeto")
-        return None
-    elif lettera not in parola:
-        print(f"La lettera '{lettera}' non è presente nella parola")
-        return "errore"
-    elif lettera in parola:
-        print("Ne hai azzeccata una")
-        return "ok"
-
-def aggiungi_lettera(controllo: str | None, parola_nascosta: list, parola_rivelata: list, lettera) -> None:
-    counter = []
+def gioca(parola:str,parola_rivelata: list, parola_nascosta: list, counter: list, lista_utilizzate: list):
     tentativi = 6
-    if controllo == None:
-        return None
-    elif controllo == "ok":
-        for i in range(len(parola_rivelata)):
-            if lettera == parola_rivelata[i]:
-                counter.append(i)
-        for index in counter:
-            parola_nascosta[index] = lettera
-        counter.clear()
-        return parola_nascosta
-    elif controllo == "errore":
+    lettera = str(input("Inserire una lettera: "))
+    if len(lettera) > 1:
+        if lettera == parola:
+            return lettera, "win"
+        else:
+            print("ERRORE: inserire una singola lettera alla volta")
+            return lettera, None
+    elif lettera in lista_utilizzate:
+        return lettera, "hai già utilizzato questa lettera"
+    elif lettera not in parola_rivelata:
+        print(f"La lettera '{lettera}' non è presente nella parola")
         tentativi -= 1
-        return tentativi
+        return lettera,"errore"
+    elif lettera in parola_rivelata:
+        if lettera in lista_utilizzate:
+            return lettera, "hai già utilizzato questa lettera"
+        else:
+            print("Ne hai azzeccata una")
+            for i in range(len(parola_rivelata)):
+                if lettera== parola_rivelata[i]:
+                    counter.append(i)
+            for i in counter:
+                parola_nascosta[i] = lettera
+            counter.clear()
+            return lettera, parola_nascosta
+    if "_" not in parola_nascosta:
+        return lettera, "win"
+    elif tentativi == 0:
+        return lettera, "lose"
+
+def avanzamento_impiccato(hang_count):
+    print(HANGMAN[hang_count])
     
 
-def avanzamento_impiccato(controllo: str | None):
-    pass
+    
+#def main():
+#    counter = []
+#    hang_count = 0
+#    parola_rivelata, parola_nascosta = scomponi_parola(scegli_parola(scegli_categoria(lista_parole)))
+#    parola = scegli_parola(scegli_categoria(lista_parole))
+#    condition = gioca(parola, parola_rivelata, parola_nascosta, counter)
+#    while condition != "win" or condition != "loose":
+#        condition = gioca(parola, parola_rivelata, parola_nascosta, counter)
+#        if condition == "errore":
+#            hang_count += 1
+#        print(avanzamento_impiccato(hang_count))
 
-scegli_parola(scegli_categoria())
+categoria= scegli_categoria(lista_parole) #OK
+
+parola = scegli_parola(categoria)  #OK
+
+scomponi = scomponi_parola(parola) #OK
+
+lista_utilizzate = []
+
+counter = []
+
+hang_count = 0
+
+x = True
+
+while x is True:
+    play = gioca(parola, scomponi[0], scomponi[1], counter, lista_utilizzate)
+    print(play)
+    if play[1] == "win":
+        print("Hai vinto")
+        x = False
+    elif play[1] == "lose":
+        print("Hai perso")
+        x = False
+    elif play == "errore":
+        lista_utilizzate.append(play[0])
+        hang_count += 1
+        avanzamento_impiccato(hang_count)
+    lista_utilizzate.append(play[0])
+    print(lista_utilizzate)
+        
+
+
+
+    
+
+    
+
+    
