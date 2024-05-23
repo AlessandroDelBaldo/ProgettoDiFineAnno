@@ -1,5 +1,7 @@
 # RICONTROLLA LA LOGICA DELLA FUNZIONE "aggiungi_lettera()", DA FINIRE
 
+from flask import Flask, app, render_template
+
 import random
 
 lista_parole = [
@@ -153,7 +155,7 @@ def gioca(parola:str,parola_rivelata: list, parola_nascosta: list, counter: list
         return lettera, "lose"
 
 def avanzamento_impiccato(hang_count):
-    print(HANGMAN[hang_count])
+    return HANGMAN[hang_count]
     
 
     
@@ -169,40 +171,45 @@ def avanzamento_impiccato(hang_count):
 #            hang_count += 1
 #        print(avanzamento_impiccato(hang_count))
 
-categoria= scegli_categoria(lista_parole) #OK
+#categoria= scegli_categoria(lista_parole) #OK
+#
+#parola = scegli_parola(categoria)  #OK
+#
+#scomponi = scomponi_parola(parola) #OK
+#
+#lista_utilizzate = []
+#
+#counter = []
+#
+#hang_count = 0
+#
+#x = True
+#
+#while x is True:
+#    play = gioca(parola, scomponi[0], scomponi[1], counter, lista_utilizzate)
+#    print(play)
+#    if play[1] == "win":
+#        print("Hai vinto")
+#        x = False
+#    elif play[1] == "lose":
+#        print("Hai perso")
+#        x = False
+#    elif play == "errore":
+#        lista_utilizzate.append(play[0])
+#        hang_count += 1
+#        print(avanzamento_impiccato(hang_count))
+#    lista_utilizzate.append(play[0])
+#    print(lista_utilizzate)
 
-parola = scegli_parola(categoria)  #OK
+app = Flask(__name__)        
 
-scomponi = scomponi_parola(parola) #OK
-
-lista_utilizzate = []
-
-counter = []
-
-hang_count = 0
-
-x = True
-
-while x is True:
-    play = gioca(parola, scomponi[0], scomponi[1], counter, lista_utilizzate)
-    print(play)
-    if play[1] == "win":
-        print("Hai vinto")
-        x = False
-    elif play[1] == "lose":
-        print("Hai perso")
-        x = False
-    elif play == "errore":
-        lista_utilizzate.append(play[0])
-        hang_count += 1
-        avanzamento_impiccato(hang_count)
-    lista_utilizzate.append(play[0])
-    print(lista_utilizzate)
-        
+@app.route("/")
+def home():
+    return render_template("index.html", lista_parole = lista_parole)
 
 
-
-    
+if __name__ == "__main__":
+    app.run(debug=True, port=5057)
 
     
 
