@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hangman</title>
+    <link rel="stylesheet" type="text/css" href="static/css/hangman.css">
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Hangman</h1>
+      <p>Parola: {{ hidden_word | join(" ") }}</p> <br>
+      <form action="" method="post">
+        <label for="letter">Inserisci una lettera:</label>
+        <br>
+        <input type="text" id="letter" name="letter" required>
+        <br>
+        <input type="submit" value="Guess" class="submit">
+      </form>
+      <br>
+      <p class = "stats">
+      Tentatativi: {{ num_guesses }} <br>
+      Vite: {{ vite }}/7 <br>
+      Lettere usate: ({{ guessed_letters | join(" ") }}) <br>
+      {{ errore }}
+      </p>
+    </div>
+  </body>
+</html>
