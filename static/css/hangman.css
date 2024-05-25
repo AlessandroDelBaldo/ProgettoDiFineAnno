@@ -1,12 +1,33 @@
 body{
-    background-image: url(images/door.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
+    margin: fit-content;
+    background-image: url("images/door.jpg");
     text-align: center;
 }
 .wrapper{
+    background-image: url("images/cappio.avif");
+    background-size: 750px 750px;
     color: white;
     font-size: 30px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     margin: auto;
+    border: 2px solid rgb(255, 255, 255);
+    width: 500px;
+    height: fit-content;
+    padding-bottom: 20px;
+    border-radius: 40px;
+}
+.submit{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 20px;
+    font-size: 20px;
+    padding: 5px;
+    text-decoration: none;
+}
+.submit:hover{
+    background-color: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    text-decoration: none;
 }
